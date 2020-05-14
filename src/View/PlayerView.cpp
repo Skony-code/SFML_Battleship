@@ -3,6 +3,7 @@
 //
 
 #include "PlayerView.h"
+#include<iostream>
 
 PlayerView::PlayerView(Player &p, sf::RenderWindow* win) {
     this->p=p;
@@ -71,6 +72,44 @@ void PlayerView::drawShip(int x, int y) {
     ship.setPosition(x,y);
     ship.setFillColor(sf::Color(128,128,128));
     win->draw(ship);
+}
+
+bool PlayerView::isInside(sf::RectangleShape &rect,int x,int y) {
+    return (x > rect.getPosition().x &&
+           x < rect.getPosition().x + rect.getSize().x &&
+           y > rect.getPosition().y &&
+           y < rect.getPosition().y + rect.getSize().y);
+}
+
+PlayerView::position PlayerView::getPosition(int x,int y) {
+    position pos;
+    for(int i=0;i<10;i++)
+    {
+        if(isInside(boarder[i],x,y))
+        {
+            pos.board_num=3;
+            pos.x=i;
+            pos.y=NULL;
+            return  pos;
+        }
+        for(int j=0;j<10;j++)
+        {
+            if(isInside(board_one[i][j],x,y))
+            {
+                pos.board_num=1;
+                pos.x=i;
+                pos.y=j;
+                return  pos;
+            }
+            else if(isInside(board_two[i][j],x,y))
+            {
+                pos.board_num=2;
+                pos.x=i;
+                pos.y=j;
+                return pos;
+            }
+        }
+    }
 }
 
 

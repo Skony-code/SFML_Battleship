@@ -18,12 +18,19 @@ private:
     int t_side;
     int bt_width;
     int bt_height;
+    bool isInside(sf::RectangleShape &rect,int x,int y);
     void drawShip(int x,int y);
     void drawCross(int x, int y, int w);//x and y of left upper corner
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
-    void clear();
     void draw();
+    struct position
+    {
+        int board_num;
+        int x;
+        int y;
+    };
+    position getPosition(int x,int y);
 };
 
 

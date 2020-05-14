@@ -9,6 +9,7 @@ int main()
 {
     sf::RenderWindow win(sf::VideoMode(500, 1050), "SFML works!");
     Player p;
+    Player p2;
     PlayerView pv(p,&win);
     p.get_enemy_shots()[1][1]=1;
     p.get_enemy_shots()[1][2]=1;
@@ -22,6 +23,12 @@ int main()
         {
             if (e.type == sf::Event::Closed)
                 win.close();
+            if(e.type == sf::Event::MouseButtonPressed && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                PlayerView::position pos=pv.getPosition(sf::Mouse::getPosition(win).x, sf::Mouse::getPosition(win).y);
+                //cout<<pos.board_num<<pos.x<<" "<<pos.y<<endl;
+                if(pos.board_num==1) p.fire(p2,pos.x,pos.y);
+            }
         }
         win.clear();
         pv.draw();
