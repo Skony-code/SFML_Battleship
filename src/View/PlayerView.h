@@ -15,10 +15,11 @@ private:
     sf::RectangleShape board_one[10][10];
     sf::RectangleShape board_two[10][10];
     sf::RectangleShape boarder[10];//this spelling is intentional
-    int t_width;
-    int t_height;
-    void drawShip();
-    void drawX();
+    int t_side;
+    int bt_width;
+    int bt_height;
+    void drawShip(int x,int y);
+    void drawCross(int x, int y, int w);//x and y of left upper corner
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
     void clear();
