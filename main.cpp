@@ -14,7 +14,8 @@ int main()
     p.get_enemy_shots()[1][1]=1;
     p.get_enemy_shots()[1][2]=1;
     p.get_player_shots()[1][1]=1;
-    //p.get_player_shots()[1][2]=1;
+
+    p2.placeShip(0,0,5,1);
     p.placeShip(3,5,4,1);
     while(win.isOpen())
     {

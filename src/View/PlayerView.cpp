@@ -48,21 +48,23 @@ void PlayerView::draw() {
         for(int j=0;j<10;j++)
         {
             if(p.get_ships()[i][j]) drawShip(i * t_side, j * t_side + 10 * t_side + bt_height);
-            if(p.get_player_shots()[i][j]) drawCross(i * t_side, j * t_side, 4);
-            if(p.get_enemy_shots()[i][j]) drawCross(i * t_side, j * t_side + 10 * t_side + bt_height,4);
+            if(p.get_player_shots()[i][j]) drawCross(i * t_side, j * t_side, 4,p.get_player_hits()[i][j]);
+            if(p.get_enemy_shots()[i][j]) drawCross(i * t_side, j * t_side + 10 * t_side + bt_height,4,0);
         }
     }
 }
 
-void PlayerView::drawCross(int x,int y,int w) {
+void PlayerView::drawCross(int x,int y,int w,bool col) {
     sf::RectangleShape line_1(sf::Vector2f(t_side * 1.414-w-1, w));
     line_1.rotate(45);
     line_1.setPosition(x+w/1.414,y);
-    line_1.setFillColor(sf::Color(0,0,0));
+    if(!col) line_1.setFillColor(sf::Color(0,0,0));
+    else line_1.setFillColor(sf::Color(255,0,0));
     sf::RectangleShape line_2(sf::Vector2f(t_side * 1.414-w-1, w));
     line_2.rotate(-45);
     line_2.setPosition(x, y + t_side-w/1.414-1);
-    line_2.setFillColor(sf::Color(0,0,0));
+    if(!col) line_2.setFillColor(sf::Color(0,0,0));
+    else line_2.setFillColor(sf::Color(255,0,0));
     win->draw(line_1);
     win->draw(line_2);
 }
