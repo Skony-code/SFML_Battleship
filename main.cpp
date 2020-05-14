@@ -1,19 +1,25 @@
 #include <SFML/Graphics.hpp>
 #include "src/Model/Player.h"
+#include "src/View/PlayerView.h"
 #include <iostream>
+#include <conio.h>
 
 using namespace std;
 int main()
 {
+    sf::RenderWindow win(sf::VideoMode(500, 1050), "SFML works!");
     Player p;
-    p.placeShip(1,1,5,0);
-    bool** tab=p.get_ships();
-    for(int i;i<10;i++)
+    PlayerView pv(p,&win);
+    while(win.isOpen())
     {
-        for(int j=0;j<10;j++)
+        sf::Event e;
+        while (win.pollEvent(e))
         {
-            cout<<tab[i][j];
+            if (e.type == sf::Event::Closed)
+                win.close();
         }
-        cout<<endl;
+        win.clear();
+        pv.draw();
+        win.display();
     }
 }
