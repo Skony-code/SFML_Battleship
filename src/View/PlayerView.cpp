@@ -33,7 +33,7 @@ PlayerView::PlayerView(Player &p, sf::RenderWindow* win) {
     }
 }
 
-void PlayerView::draw() {
+void PlayerView::drawBoard() {
     for(int i=0;i<10;i++)
     {
         win->draw(boarder[i]);
@@ -112,6 +112,16 @@ PlayerView::position PlayerView::getPosition(int x,int y) {
             }
         }
     }
+}
+
+void PlayerView::drawStart() {
+    sf::Text text;//todo load fonts
+    text.setString("Hello world");
+    text.setPosition(100,100);
+    text.setCharacterSize(24); // in pixels, not points!
+    text.setFillColor(sf::Color::Red);
+    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+    win->draw(text);
 }
 
 

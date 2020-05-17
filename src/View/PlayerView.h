@@ -23,7 +23,11 @@ private:
     void drawCross(int x, int y, int w,bool col);//x and y of left upper corner, 0-black 1-red
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
-    void draw();
+    void drawBoard();
+    void clear();
+    void drawWin();
+    void drawLose();
+    void drawStart();
     struct position
     {
         int board_num;
