@@ -19,6 +19,8 @@ PlayerView *State::getPlayerView(GameEngine& GM) {
 
 //Starting State
 void StartState::handleEvent(GameEngine& GM,sf::Event e) {
+    if(e.type==sf::Event::KeyPressed || e.type==sf::Event::MouseButtonPressed)
+        setState(GM,new P1PositioningState);
 }
 
 void StartState::render(GameEngine& GM) {

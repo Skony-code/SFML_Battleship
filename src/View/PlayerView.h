@@ -10,6 +10,7 @@
 
 class PlayerView {
 private:
+    sf::Font font;
     Player p;
     sf::RenderWindow* win;
     sf::RectangleShape board_one[10][10];

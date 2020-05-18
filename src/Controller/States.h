@@ -29,6 +29,7 @@ public:
 
 class P1PositioningState : public State
 {
+public:
     virtual void handleEvent(GameEngine& GM,sf::Event e);
     virtual void render(GameEngine& GM);
     virtual void update(GameEngine& GM);

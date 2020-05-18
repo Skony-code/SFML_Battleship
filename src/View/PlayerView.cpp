@@ -8,6 +8,7 @@
 PlayerView::PlayerView(Player &p, sf::RenderWindow* win) {
     this->p=p;
     this->win=win;
+    font.loadFromFile("Arial.ttf");
     t_side= win->getSize().x / 10;
     bt_width=win->getSize().x / 10;
     bt_height=win->getSize().y / 21;
@@ -91,7 +92,7 @@ PlayerView::position PlayerView::getPosition(int x,int y) {
         {
             pos.board_num=3;
             pos.x=i;
-            pos.y=NULL;
+            pos.y=0;
             return  pos;
         }
         for(int j=0;j<10;j++)
@@ -115,12 +116,12 @@ PlayerView::position PlayerView::getPosition(int x,int y) {
 }
 
 void PlayerView::drawStart() {
-    sf::Text text;//todo load fonts
-    text.setString("Hello world");
-    text.setPosition(100,100);
-    text.setCharacterSize(24); // in pixels, not points!
-    text.setFillColor(sf::Color::Red);
-    text.setStyle(sf::Text::Bold | sf::Text::Underlined);
+    sf::Text text;
+    text.setFont(font);
+    text.setString("Battleships");
+    text.setPosition(win->getSize().x/2-120,win->getSize().y/2);
+    text.setCharacterSize(48); // in pixels, not points!
+    text.setFillColor(sf::Color::White);
     win->draw(text);
 }
 
