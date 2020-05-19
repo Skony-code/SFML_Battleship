@@ -20,8 +20,8 @@ private:
     int bt_width;
     int bt_height;
     bool isInside(sf::RectangleShape &rect,int x,int y);
-    void drawShip(int x,int y);
     void drawCross(int x, int y, int w,bool col);//x and y of left upper corner, 0-black 1-red
+    void drawShipTile(int x,int y);
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
     void drawBoard();
@@ -29,6 +29,7 @@ public:
     void drawWin();
     void drawLose();
     void drawStart();
+    void drawShip(int x,int y,int length,bool aligment);
     struct position
     {
         int board_num;
@@ -36,6 +37,7 @@ public:
         int y;
     };
     position getPosition(int x,int y);
+    sf::RenderWindow* getWin();
 };
 
 

@@ -29,7 +29,25 @@ public:
 
 class P1PositioningState : public State
 {
+private:
+    bool aligment;
+    int sel_ship_length;
+    int sel_ship_quantity[5];//number of ships of length 5-i
 public:
+    P1PositioningState();
+    virtual void handleEvent(GameEngine& GM,sf::Event e);
+    virtual void render(GameEngine& GM);
+    virtual void update(GameEngine& GM);
+};
+
+class P2PositioningState : public State
+{
+private:
+    bool sel_ship_aligment;
+    int sel_ship_length;
+    int sel_ship_quantity;
+public:
+    P2PositioningState();
     virtual void handleEvent(GameEngine& GM,sf::Event e);
     virtual void render(GameEngine& GM);
     virtual void update(GameEngine& GM);

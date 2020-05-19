@@ -48,7 +48,7 @@ void PlayerView::drawBoard() {
     {
         for(int j=0;j<10;j++)
         {
-            if(p.get_ships()[i][j]) drawShip(i * t_side, j * t_side + 10 * t_side + bt_height);
+            if(p.get_ships()[i][j]) drawShipTile(i * t_side, j * t_side + 10 * t_side + bt_height);
             if(p.get_player_shots()[i][j]) drawCross(i * t_side, j * t_side, 4,p.get_player_hits()[i][j]);
             if(p.get_enemy_shots()[i][j]) drawCross(i * t_side, j * t_side + 10 * t_side + bt_height,4,0);
         }
@@ -70,7 +70,7 @@ void PlayerView::drawCross(int x,int y,int w,bool col) {
     win->draw(line_2);
 }
 
-void PlayerView::drawShip(int x, int y) {
+void PlayerView::drawShipTile(int x, int y) {
     sf::RectangleShape ship(sf::Vector2f(t_side-1,t_side-1));
     ship.setPosition(x,y);
     ship.setFillColor(sf::Color(128,128,128));
@@ -123,6 +123,18 @@ void PlayerView::drawStart() {
     text.setCharacterSize(48); // in pixels, not points!
     text.setFillColor(sf::Color::White);
     win->draw(text);
+}
+
+void PlayerView::drawShip(int x,int y,int length,bool aligment) {
+    for(int i=0;i<length;i++)
+    {
+        if(!aligment) drawShipTile(x+i*t_side,y);
+        else drawShipTile(x,y+i*t_side);
+    }
+}
+
+sf::RenderWindow *PlayerView::getWin() {
+    return win;
 }
 
 

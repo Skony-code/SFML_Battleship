@@ -38,6 +38,26 @@ bool Player::incomingFire(int x, int y) {
 }
 
 bool Player::placeShip(int x, int y, int length, bool aligment) {
+    //Checking if ship can be placed
+    if((x<0||x+length>10 && !aligment)||(y<0 || y+length>10 && aligment)) return false;
+    else
+    {
+        for(int i=-1;i<2;i++)
+        {
+            for(int j=-1;j<length+1;j++)
+            {
+                if(x+i>=0 && x+i<10 && y+j>=0 && y+j<10 && aligment)
+                {
+                    if (ships[x + i][y + j]) return false;
+                }
+                else if(x+j>=0 && x+j<10 && y+i>=0 && y+i<10 && !aligment)
+                {
+                    if(ships[x+j][y+i]) return false;
+                }
+            }
+        }
+    }
+    //Placing ship
     for(int i=0;i<length;i++)
     {
         if(aligment)
