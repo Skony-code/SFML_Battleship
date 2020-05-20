@@ -3,11 +3,15 @@
 //
 
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include "GameEngine.h"
-GameEngine::GameEngine(Player* p, PlayerView* pv) {
-    this->player=p;
+GameEngine::GameEngine(Player* p1,Player* p2, PlayerView* pv) {
+    this->player_1=p1;
+    this->player_2=p2;
     this->playerView=pv;
     state=new StartState;
+    srand(time(NULL));
 }
 
 void GameEngine::handleEvent(sf::Event e) {

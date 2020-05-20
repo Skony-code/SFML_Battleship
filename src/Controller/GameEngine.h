@@ -15,10 +15,11 @@ class GameEngine {
     friend class State;
 private:
     State* state;
-    Player* player;
+    Player* player_1;
+    Player* player_2;
     PlayerView* playerView;
 public:
-    GameEngine(Player* p, PlayerView* pv);
+    GameEngine(Player* p1,Player* p2, PlayerView* pv);
     void handleEvent(sf::Event e);
     void update();
     void render();

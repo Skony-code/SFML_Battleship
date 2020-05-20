@@ -15,7 +15,8 @@ public:
     virtual void render(GameEngine& GM) = 0;
 protected:
     void setState(GameEngine& GM,State* state);
-    Player* getPlayer(GameEngine& GM);
+    Player* getPlayer1(GameEngine& GM);
+    Player* getPlayer2(GameEngine& GM);
     PlayerView* getPlayerView(GameEngine& GM);
 };
 
@@ -29,10 +30,11 @@ public:
 
 class P1PositioningState : public State
 {
-private:
+protected:
     bool aligment;
     int sel_ship_length;
     int sel_ship_quantity[5];//number of ships of length 5-i
+    void randomPositioning(GameEngine &GM,Player* p);
 public:
     P1PositioningState();
     virtual void handleEvent(GameEngine& GM,sf::Event e);
@@ -40,14 +42,9 @@ public:
     virtual void update(GameEngine& GM);
 };
 
-class P2PositioningState : public State
+class P2PositioningState : public P1PositioningState
 {
-private:
-    bool sel_ship_aligment;
-    int sel_ship_length;
-    int sel_ship_quantity;
 public:
-    P2PositioningState();
     virtual void handleEvent(GameEngine& GM,sf::Event e);
     virtual void render(GameEngine& GM);
     virtual void update(GameEngine& GM);

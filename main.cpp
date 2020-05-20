@@ -10,8 +10,9 @@ int main()
 {
     sf::RenderWindow win(sf::VideoMode(500, 1050), "SFML works!");
     Player P1;
+    Player P2;
     PlayerView PV(P1,&win);
-    GameEngine game_engine(&P1,&PV);
+    GameEngine game_engine(&P1,&P2,&PV);
     while(win.isOpen())
     {
         sf::Event e;
