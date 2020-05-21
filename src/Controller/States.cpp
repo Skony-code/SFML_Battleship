@@ -6,6 +6,7 @@
 #include "States.h"
 //State
 void State::setState(GameEngine& GM,State* state) {
+    delete GM.state;
     GM.state=state;
 }
 
@@ -34,17 +35,36 @@ void StartState::update(GameEngine &GM) {
 
 }
 
+//PositioningState
+PositioningState::PositioningState() {
+    sel_ship_quantity[0]=1;
+    sel_ship_quantity[1]=1;
+    sel_ship_quantity[2]=2;
+    sel_ship_quantity[3]=3;
+    sel_ship_quantity[4]=4;
+}
+void PositioningState::randomPositioning(GameEngine &GM,Player* p) {
+    for(int i=0;i<5;i++)
+    {
+        for(int j=0;j<sel_ship_quantity[i];j++)
+        {
+            bool SHIP_PLACED=false;
+            while(!SHIP_PLACED)
+            {
+                bool rand_aligment=rand()%2;
+                int rand_x=rand()%10;
+                int rand_y=rand()%10;
+                SHIP_PLACED=p->placeShip(rand_x,rand_y,5-i,rand_aligment);
+            }
+        }
+    }
+}
 
 //P1PositioningState
 P1PositioningState::P1PositioningState() {
 
     aligment=1;
     sel_ship_length=5;
-    sel_ship_quantity[0]=1;
-    sel_ship_quantity[1]=1;
-    sel_ship_quantity[2]=2;
-    sel_ship_quantity[3]=3;
-    sel_ship_quantity[4]=4;
 }
 
 void P1PositioningState::handleEvent(GameEngine& GM,sf::Event e) { //todo ability to select ship by pressing num on keyboard
@@ -88,31 +108,10 @@ void P1PositioningState::render(GameEngine& GM) {
             sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).y,sel_ship_length,aligment);
 }
 
-void P1PositioningState::update(GameEngine &GM) {
-
-}
-
-void P1PositioningState::randomPositioning(GameEngine &GM,Player* p) {
-    for(int i=0;i<5;i++)
-    {
-        for(int j=0;j<sel_ship_quantity[i];j++)
-        {
-            bool SHIP_PLACED=false;
-            while(!SHIP_PLACED)
-            {
-                bool rand_aligment=rand()%2;
-                int rand_x=rand()%10;
-                int rand_y=rand()%10;
-                SHIP_PLACED=p->placeShip(rand_x,rand_y,5-i,rand_aligment);
-            }
-        }
-    }
-}
+void P1PositioningState::update(GameEngine &GM) {}
 
 //P2PositioningState
-void P2PositioningState::handleEvent(GameEngine &GM, sf::Event e) {
-
-}
+void P2PositioningState::handleEvent(GameEngine &GM, sf::Event e) {}
 
 void P2PositioningState::render(GameEngine &GM) {
     getPlayerView(GM)->drawBoard();
@@ -120,4 +119,60 @@ void P2PositioningState::render(GameEngine &GM) {
 
 void P2PositioningState::update(GameEngine &GM) {
     randomPositioning(GM,getPlayer2(GM));
+    setState(GM,new P1TurnState);
+}
+//P1TurnState
+void P1TurnState::handleEvent(GameEngine &GM, sf::Event e) {
+    if(e.type==sf::Event::MouseButtonPressed)
+    {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            PlayerView::position p=getPlayerView(GM)->getPosition(
+                    sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).x,
+                    sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).y);
+            if(p.board_num==1)
+            {
+                getPlayer1(GM)->fire(*getPlayer2(GM),p.x,p.y);
+                if(!getPlayer1(GM)->get_player_hits()[p.x][p.y]) setState(GM,new P2TurnState);
+            }
+        }
+    }
+}
+
+void P1TurnState::render(GameEngine &GM) {
+    getPlayerView(GM)->drawBoard();
+}
+void P1TurnState::update(GameEngine &GM) {}
+
+//P2TurnState
+void P2TurnState::handleEvent(GameEngine &GM, sf::Event e) {}
+
+void P2TurnState::render(GameEngine &GM) {
+    getPlayerView(GM)->drawBoard();
+}
+void P2TurnState::update(GameEngine &GM) {
+    fireAtRandom(GM);
+}
+void P2TurnState::fireAtRandom(GameEngine& GM) {
+    int empty_tiles=0;
+    for(int i=0;i<10;i++)
+    {
+        for(int j=0;j<10;j++)
+        {
+            if(!getPlayer2(GM)->get_player_shots()[i][j])empty_tiles++;
+        }
+    }
+
+    int rand_shot=rand()%empty_tiles;
+    for(int i=0;i<10;i++)
+    {
+        for(int j=0;j<10;j++)
+        {
+            if(i*10+j==rand_shot)
+            {
+                getPlayer2(GM)->fire(*getPlayer1(GM),i,j);
+                if(!getPlayer2(GM)->get_player_hits()[i][j])setState(GM,new P1TurnState);
+            }
+        }
+    }
 }

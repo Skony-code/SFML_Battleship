@@ -23,6 +23,7 @@ int main()
             else
                 game_engine.handleEvent(e);
         }
+        game_engine.update();
         win.clear();
         game_engine.render();
         win.display();
