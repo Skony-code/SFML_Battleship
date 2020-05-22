@@ -77,4 +77,12 @@ public:
     virtual void render(GameEngine& GM);
     virtual void update(GameEngine& GM);
 };
+
+class GameEndState : public State
+{
+public:
+    virtual void handleEvent(GameEngine& GM,sf::Event e);
+    virtual void render(GameEngine& GM);
+    virtual void update(GameEngine& GM);
+};
 #endif //SFML_BATTLESHIP_STATES_H

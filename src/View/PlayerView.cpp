@@ -133,6 +133,26 @@ void PlayerView::drawShip(int x,int y,int length,bool aligment) {
     }
 }
 
+void PlayerView::drawWin() {
+    sf::Text text;
+    text.setFont(font);
+    text.setString("You Win");
+    text.setPosition(win->getSize().x/2-120,win->getSize().y/2);
+    text.setCharacterSize(48); // in pixels, not points!
+    text.setFillColor(sf::Color::White);
+    win->draw(text);
+}
+
+void PlayerView::drawLose() {
+    sf::Text text;
+    text.setFont(font);
+    text.setString("You Lose");
+    text.setPosition(win->getSize().x/2-100,win->getSize().y/2);
+    text.setCharacterSize(48); // in pixels, not points!
+    text.setFillColor(sf::Color::White);
+    win->draw(text);
+}
+
 sf::RenderWindow *PlayerView::getWin() {
     return win;
 }

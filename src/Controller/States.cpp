@@ -134,6 +134,7 @@ void P1TurnState::handleEvent(GameEngine &GM, sf::Event e) {
             {
                 getPlayer1(GM)->fire(*getPlayer2(GM),p.x,p.y);
                 if(!getPlayer1(GM)->get_player_hits()[p.x][p.y]) setState(GM,new P2TurnState);
+                else if(getPlayer2(GM)->didLost())setState(GM,new GameEndState);
             }
         }
     }
@@ -152,6 +153,7 @@ void P2TurnState::render(GameEngine &GM) {
 }
 void P2TurnState::update(GameEngine &GM) {
     fireAtRandom(GM);
+    if(getPlayer1(GM)->didLost())setState(GM,new GameEndState);
 }
 void P2TurnState::fireAtRandom(GameEngine& GM) {
     int empty_tiles=0;
@@ -159,20 +161,49 @@ void P2TurnState::fireAtRandom(GameEngine& GM) {
     {
         for(int j=0;j<10;j++)
         {
-            if(!getPlayer2(GM)->get_player_shots()[i][j])empty_tiles++;
+            if(!getPlayer2(GM)->get_player_shots()[i][j])
+            {
+                empty_tiles++;
+            }
         }
     }
-
     int rand_shot=rand()%empty_tiles;
+    std::cout<<rand_shot<<std::endl;
     for(int i=0;i<10;i++)
     {
         for(int j=0;j<10;j++)
         {
-            if(i*10+j==rand_shot)
+            if(!getPlayer2(GM)->get_player_shots()[i][j])
             {
-                getPlayer2(GM)->fire(*getPlayer1(GM),i,j);
-                if(!getPlayer2(GM)->get_player_hits()[i][j])setState(GM,new P1TurnState);
+                if (rand_shot == 0)
+                {
+                    getPlayer2(GM)->fire(*getPlayer1(GM), i, j);
+                    if (getPlayer2(GM)->get_player_hits()[i][j])
+                    {
+                        setState(GM, new P2TurnState);
+                        return;
+                    }
+                    else
+                    {
+                        setState(GM, new P1TurnState);
+                        return;
+                    }
+                }
+                else
+                {
+                    rand_shot--;
+                }
             }
         }
     }
 }
+
+//GameEndState
+void GameEndState::handleEvent(GameEngine &GM, sf::Event e) {}
+
+void GameEndState::render(GameEngine &GM) {
+    if(getPlayer1(GM)->didLost())getPlayerView(GM)->drawLose();
+    else getPlayerView(GM)->drawWin();
+}
+
+void GameEndState::update(GameEngine &GM) {}
