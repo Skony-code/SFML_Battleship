@@ -135,6 +135,7 @@ void P1TurnState::handleEvent(GameEngine &GM, sf::Event e) {
                 getPlayer1(GM)->fire(*getPlayer2(GM),p.x,p.y);
                 if(!getPlayer1(GM)->get_player_hits()[p.x][p.y]) setState(GM,new P2TurnState);
                 else if(getPlayer2(GM)->didLost())setState(GM,new GameEndState);
+                else std::cout<<getPlayer2(GM)->didSink(p.x,p.y)<<std::endl;
             }
         }
     }
@@ -168,7 +169,6 @@ void P2TurnState::fireAtRandom(GameEngine& GM) {
         }
     }
     int rand_shot=rand()%empty_tiles;
-    std::cout<<rand_shot<<std::endl;
     for(int i=0;i<10;i++)
     {
         for(int j=0;j<10;j++)

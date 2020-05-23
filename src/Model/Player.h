@@ -18,6 +18,8 @@ public:
     void fire(Player p,int x,int y);
     bool incomingFire(int x,int y);//returns true if hit
     bool placeShip(int x,int y,int length,bool aligment);//0-horizontal 1-vertical, returns true if successful
+    bool didSink(int x,int y);
+    bool checkAligment(int x,int y);//returns aligment of ship that x y is part of
     bool didLost();
     bool** get_ships();
     bool** get_enemy_shots();

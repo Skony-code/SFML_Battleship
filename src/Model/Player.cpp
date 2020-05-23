@@ -2,6 +2,7 @@
 // Created by skony on 2020-05-09.
 //
 
+#include <iostream>
 #include "Player.h"
 
 Player::Player() {
@@ -85,6 +86,50 @@ bool Player::didLost() {
     return true;
 }
 
+bool Player::didSink(int x, int y)
+{
+    if(checkAligment(x,y))
+    {
+        int z=1;
+        while(y+z<10 && ships[x][y+z])
+        {
+            if(!enemy_shots[x][y+z])return 0;
+            else z++;
+        }
+        z=1;
+        while(y-z>=0 && ships[x][y-z])
+        {
+            if(!enemy_shots[x][y-z])return 0;
+            else z++;
+        }
+        return 1;
+    } else
+    {
+        int z=1;
+        while(x+z<10 && ships[x+z][y])
+        {
+            if(!enemy_shots[x+z][y])return 0;
+            else z++;
+        }
+        z=1;
+        while(x-z>=0 && ships[x-z][y])
+        {
+            if(!enemy_shots[x-z][y])return 0;
+            else z++;
+        }
+        return 1;
+    }
+}
+
+bool Player::checkAligment(int x, int y)
+{
+    if(x>0 && ships[x-1][y]) return 0;
+    if(x<9 && ships[x+1][y]) return 0;
+    if(y>0 && ships[x][y-1]) return 1;
+    if(y<9 && ships[x][y+1]) return 1;
+    return 1;
+}
+
 bool** Player::get_ships() {
     return ships;
 }
@@ -100,3 +145,4 @@ bool** Player::get_player_shots() {
 bool **Player::get_player_hits() {
     return player_hits;
 }
+
