@@ -29,6 +29,7 @@ public:
     void drawWin();
     void drawLose();
     void drawStart();
+    void drawSank();
     void drawShip(int x,int y,int length,bool aligment);
     struct position
     {

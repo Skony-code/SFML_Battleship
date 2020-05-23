@@ -130,12 +130,16 @@ void P1TurnState::handleEvent(GameEngine &GM, sf::Event e) {
             PlayerView::position p=getPlayerView(GM)->getPosition(
                     sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).x,
                     sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).y);
-            if(p.board_num==1)
+            if(p.board_num==1 && !getPlayer1(GM)->get_player_shots()[p.x][p.y])
             {
                 getPlayer1(GM)->fire(*getPlayer2(GM),p.x,p.y);
-                if(!getPlayer1(GM)->get_player_hits()[p.x][p.y]) setState(GM,new P2TurnState);
-                else if(getPlayer2(GM)->didLost())setState(GM,new GameEndState);
-                else std::cout<<getPlayer2(GM)->didSink(p.x,p.y)<<std::endl;
+                ship_sank=0;
+                if(getPlayer1(GM)->get_player_hits()[p.x][p.y])
+                {
+                    if (getPlayer2(GM)->didLost())setState(GM, new GameEndState);
+                    if (getPlayer2(GM)->didSink(p.x, p.y)) ship_sank = 1;
+                }
+                else setState(GM,new P2TurnState);
             }
         }
     }
@@ -143,6 +147,7 @@ void P1TurnState::handleEvent(GameEngine &GM, sf::Event e) {
 
 void P1TurnState::render(GameEngine &GM) {
     getPlayerView(GM)->drawBoard();
+    if(ship_sank)getPlayerView(GM)->drawSank();
 }
 void P1TurnState::update(GameEngine &GM) {}
 

@@ -62,6 +62,8 @@ public:
 
 class P1TurnState : public State
 {
+private:
+    bool ship_sank=false;
 public:
     virtual void handleEvent(GameEngine& GM,sf::Event e);
     virtual void render(GameEngine& GM);
