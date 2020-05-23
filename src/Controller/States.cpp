@@ -102,7 +102,7 @@ void P1PositioningState::handleEvent(GameEngine& GM,sf::Event e) { //todo abilit
 void P1PositioningState::render(GameEngine& GM) {
     getPlayerView(GM)->drawBoard();
     getPlayerView(GM)->drawShip(sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).x,
-            sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).y,sel_ship_length,aligment);
+            sf::Mouse::getPosition(*(getPlayerView(GM)->getWin())).y,sel_ship_length,aligment,sf::Color(128,128,128));
 }
 
 void P1PositioningState::update(GameEngine &GM) {}

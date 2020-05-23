@@ -24,12 +24,14 @@ PlayerView::PlayerView(Player &p, sf::RenderWindow* win) {
             board_one[i][j]=sf::RectangleShape(sf::Vector2f(t_side, t_side));
             board_one[i][j].setPosition(i * t_side, j * t_side);
             board_one[i][j].setOutlineThickness(1);
-            board_one[i][j].setOutlineColor(sf::Color(0,0,0));
+            board_one[i][j].setOutlineColor(sf::Color(40,185,0));
+            board_one[i][j].setFillColor(sf::Color(0,0,0));
 
             board_two[i][j]=sf::RectangleShape(sf::Vector2f(t_side, t_side));
             board_two[i][j].setPosition(i * t_side, j * t_side + 10 * t_side + bt_height);
             board_two[i][j].setOutlineThickness(1);
             board_two[i][j].setOutlineColor(sf::Color(0,0,0));
+            board_two[i][j].setFillColor(sf::Color(66,120,255));
         }
     }
 }
@@ -48,32 +50,31 @@ void PlayerView::drawBoard() {
     {
         for(int j=0;j<10;j++)
         {
-            if(p.get_ships()[i][j]) drawShipTile(i * t_side, j * t_side + 10 * t_side + bt_height);
-            if(p.get_player_shots()[i][j]) drawCross(i * t_side, j * t_side, 4,p.get_player_hits()[i][j]);
-            if(p.get_enemy_shots()[i][j]) drawCross(i * t_side, j * t_side + 10 * t_side + bt_height,4,0);
+            if(p.get_ships()[i][j]) drawShipTile(i * t_side, j * t_side + 10 * t_side + bt_height,sf::Color(128,128,128));
+            if(p.get_player_shots()[i][j] && p.get_player_hits()[i][j]) drawShipTile(i * t_side, j * t_side,sf::Color(40,185,0));
+            else if(p.get_player_shots()[i][j]) drawCross(i * t_side, j * t_side, 4,sf::Color(40,185,0));
+            if(p.get_enemy_shots()[i][j]) drawCross(i * t_side, j * t_side + 10 * t_side + bt_height,4,sf::Color(0,0,0));
         }
     }
 }
 
-void PlayerView::drawCross(int x,int y,int w,bool col) {
+void PlayerView::drawCross(int x,int y,int w,sf::Color c) {
     sf::RectangleShape line_1(sf::Vector2f(t_side * 1.414-w-1, w));
     line_1.rotate(45);
     line_1.setPosition(x+w/1.414,y);
-    if(!col) line_1.setFillColor(sf::Color(0,0,0));
-    else line_1.setFillColor(sf::Color(255,0,0));
+    line_1.setFillColor(c);
     sf::RectangleShape line_2(sf::Vector2f(t_side * 1.414-w-1, w));
     line_2.rotate(-45);
     line_2.setPosition(x, y + t_side-w/1.414-1);
-    if(!col) line_2.setFillColor(sf::Color(0,0,0));
-    else line_2.setFillColor(sf::Color(255,0,0));
+    line_2.setFillColor(c);
     win->draw(line_1);
     win->draw(line_2);
 }
 
-void PlayerView::drawShipTile(int x, int y) {
+void PlayerView::drawShipTile(int x, int y,sf::Color c) {
     sf::RectangleShape ship(sf::Vector2f(t_side-1,t_side-1));
     ship.setPosition(x,y);
-    ship.setFillColor(sf::Color(128,128,128));
+    ship.setFillColor(c);
     win->draw(ship);
 }
 
@@ -125,11 +126,11 @@ void PlayerView::drawStart() {
     win->draw(text);
 }
 
-void PlayerView::drawShip(int x,int y,int length,bool aligment) {
+void PlayerView::drawShip(int x,int y,int length,bool aligment,sf::Color c) {
     for(int i=0;i<length;i++)
     {
-        if(!aligment) drawShipTile(x+i*t_side,y);
-        else drawShipTile(x,y+i*t_side);
+        if(!aligment) drawShipTile(x+i*t_side,y,c);
+        else drawShipTile(x,y+i*t_side,c);
     }
 }
 
@@ -139,7 +140,7 @@ void PlayerView::drawWin() {
     text.setString("You Win");
     text.setCharacterSize(48); // in pixels, not points!
     text.setPosition(win->getSize().x/2-text.getGlobalBounds().width/2,win->getSize().y/2-text.getGlobalBounds().height/2);
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color(40,185,0));
     win->draw(text);
 }
 
@@ -149,7 +150,7 @@ void PlayerView::drawLose() {
     text.setString("You Lose");
     text.setCharacterSize(48); // in pixels, not points!
     text.setPosition(win->getSize().x/2-text.getGlobalBounds().width/2,win->getSize().y/2-text.getGlobalBounds().height/2);
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color(40,185,0));
     win->draw(text);
 }
 
@@ -164,7 +165,7 @@ void PlayerView::drawSank()
     text.setString("Ship Sank !!!");
     text.setCharacterSize(48); // in pixels, not points!
     text.setPosition(win->getSize().x/2-text.getGlobalBounds().width/2,win->getSize().y/2-text.getGlobalBounds().height/2-12);
-    text.setFillColor(sf::Color::Red);
+    text.setFillColor(sf::Color(40,185,0));
     win->draw(text);
 }
 

@@ -20,8 +20,8 @@ private:
     int bt_width;
     int bt_height;
     bool isInside(sf::RectangleShape &rect,int x,int y);
-    void drawCross(int x, int y, int w,bool col);//x and y of left upper corner, 0-black 1-red
-    void drawShipTile(int x,int y);
+    void drawCross(int x, int y, int w,sf::Color c);
+    void drawShipTile(int x,int y,sf::Color c);
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
     void drawBoard();
@@ -30,7 +30,7 @@ public:
     void drawLose();
     void drawStart();
     void drawSank();
-    void drawShip(int x,int y,int length,bool aligment);
+    void drawShip(int x,int y,int length,bool aligment,sf::Color c);
     struct position
     {
         int board_num;
