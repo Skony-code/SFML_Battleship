@@ -83,11 +83,8 @@ void P1PositioningState::handleEvent(GameEngine& GM,sf::Event e) { //todo abilit
                     sel_ship_quantity[5-sel_ship_length]--;
                     if(sel_ship_quantity[5-sel_ship_length]==0)
                     {
-                        if(sel_ship_length>0)
-                        {
-                            sel_ship_length--;
-                        }
-                        else
+                        sel_ship_length--;
+                        if(sel_ship_length==0)
                         {
                             setState(GM,new P2PositioningState);
                         }
