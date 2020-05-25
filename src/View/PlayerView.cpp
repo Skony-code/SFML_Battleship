@@ -179,9 +179,9 @@ void PlayerView::drawScores()
     text.setFont(font);
     text.setCharacterSize(36); // in pixels, not points!
     text.setFillColor(sf::Color(40,185,0));
-    text.setString("Scores:");
+    text.setString("Last Scores:");
     text.setPosition(win->getSize().x / 2 - text.getGlobalBounds().width / 2,
-                     win->getSize().y / 4 - text.getGlobalBounds().height / 2 + 50);
+                     win->getSize().y / 4 - text.getGlobalBounds().height / 2 + 150);
     win->draw(text);
     for(int i=scores.size()-1;i>=0;i--)
     {
@@ -190,7 +190,7 @@ void PlayerView::drawScores()
         s[9]=scores[5-i]+49;
         text.setString(s);
         text.setPosition(win->getSize().x / 2 - text.getGlobalBounds().width / 2,
-                         win->getSize().y / 2 - text.getGlobalBounds().height / 4 + 20 +i*50);
+                         win->getSize().y / 4 - text.getGlobalBounds().height / 2 + 200 +i*50);
         win->draw(text);
     }
 }
