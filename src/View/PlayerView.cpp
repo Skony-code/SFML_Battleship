@@ -183,11 +183,11 @@ void PlayerView::drawScores()
     text.setPosition(win->getSize().x / 2 - text.getGlobalBounds().width / 2,
                      win->getSize().y / 4 - text.getGlobalBounds().height / 2 + 150);
     win->draw(text);
-    for(int i=scores.size()-1;i>=0;i--)
+    for(int i=0;i<scores.size();i++)
     {
         std::string s="x.Player y won.";
         s[0]=(char)(i+49);
-        s[9]=scores[5-i]+49;
+        s[9]=scores[scores.size()-1-i]+49;
         text.setString(s);
         text.setPosition(win->getSize().x / 2 - text.getGlobalBounds().width / 2,
                          win->getSize().y / 4 - text.getGlobalBounds().height / 2 + 200 +i*50);
@@ -201,7 +201,8 @@ void PlayerView::loadScores()
     std::string winner;
     while(std::getline(file,winner))
     {
-        scores.push_back( (winner=="0")? 0:1);
+        if(winner =="0")scores.push_back(0);
+        else if(winner == "1")scores.push_back(1);
         if(scores.size()>5) scores.erase(scores.begin());
     }
     file.close();
