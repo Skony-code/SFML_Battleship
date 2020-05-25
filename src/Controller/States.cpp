@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <fstream>
 #include "States.h"
 //State
 void State::setState(GameEngine& GM,State* state) {
@@ -29,6 +30,7 @@ void StartState::handleEvent(GameEngine& GM,sf::Event e) {
 
 void StartState::render(GameEngine& GM) {
     getPlayerView(GM)->drawStart();
+    getPlayerView(GM)->drawScores();
 }
 
 void StartState::update(GameEngine &GM) {
@@ -133,7 +135,15 @@ void P1TurnState::handleEvent(GameEngine &GM, sf::Event e) {
                 ship_sank=0;
                 if(getPlayer1(GM)->get_player_hits()[p.x][p.y])
                 {
-                    if (getPlayer2(GM)->didLost())setState(GM, new GameEndState);
+                    if (getPlayer2(GM)->didLost())
+                    {
+                        setState(GM, new GameEndState);
+                        setState(GM,new GameEndState);
+                        std::ofstream file;
+                        file.open("Scores.txt", std::ios_base::app);
+                        file<<"\n"<<0;
+                        file.close();
+                    }
                     if (getPlayer2(GM)->didSink(p.x, p.y)) ship_sank = 1;
                 }
                 else setState(GM,new P2TurnState);
@@ -159,7 +169,14 @@ void P2TurnState::update(GameEngine &GM) {
     getPlayer2(GM)->fire(*getPlayer1(GM),fire_x,fire_y);
     std::cout<<fire_x<<" "<<fire_y<<std::endl;
     if(!getPlayer2(GM)->get_player_hits()[fire_x][fire_y])setState(GM,new P1TurnState);
-    else if(getPlayer1(GM)->didLost())setState(GM,new GameEndState);
+    else if(getPlayer1(GM)->didLost())
+    {
+        setState(GM,new GameEndState);
+        std::ofstream file;
+        file.open("Scores.txt", std::ios_base::app);
+        file<<"\n"<<1;
+        file.close();
+    }
 }
 void P2TurnState::setRandomXY(GameEngine &GM)
 {

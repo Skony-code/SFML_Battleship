@@ -10,6 +10,7 @@
 
 class PlayerView {
 private:
+    std::vector<bool> scores;
     sf::Font font;
     Player p;
     sf::RenderWindow* win;
@@ -22,6 +23,7 @@ private:
     bool isInside(sf::RectangleShape &rect,int x,int y);
     void drawCross(int x, int y, int w,sf::Color c);
     void drawShipTile(int x,int y,sf::Color c);
+    void loadScores();
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
     void drawBoard();
@@ -30,6 +32,7 @@ public:
     void drawLose();
     void drawStart();
     void drawSank();
+    void drawScores();
     void drawShip(int x,int y,int length,bool aligment,sf::Color c);
     struct position
     {

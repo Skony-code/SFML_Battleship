@@ -4,10 +4,12 @@
 
 #include "PlayerView.h"
 #include<iostream>
+#include <fstream>
 
 PlayerView::PlayerView(Player &p, sf::RenderWindow* win) {
     this->p=p;
     this->win=win;
+    loadScores();
     font.loadFromFile("Arial.ttf");
     t_side= win->getSize().x / 10;
     bt_width=win->getSize().x / 10;
@@ -123,7 +125,7 @@ void PlayerView::drawStart() {
     text.setFont(font);
     text.setString("Battleships");
     text.setCharacterSize(48); // in pixels, not points!
-    text.setPosition(win->getSize().x/2-text.getGlobalBounds().width/2,win->getSize().y/2-text.getGlobalBounds().height/2);
+    text.setPosition(win->getSize().x/2-text.getGlobalBounds().width/2,win->getSize().y/4-text.getGlobalBounds().height/2);
     text.setFillColor(sf::Color(40,185,0));
     win->draw(text);
 }
@@ -171,6 +173,36 @@ void PlayerView::drawSank()
     win->draw(text);
 }
 
+void PlayerView::drawScores()
+{
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(36); // in pixels, not points!
+    text.setFillColor(sf::Color(40,185,0));
+    text.setString("Scores:");
+    text.setPosition(win->getSize().x / 2 - text.getGlobalBounds().width / 2,
+                     win->getSize().y / 4 - text.getGlobalBounds().height / 2 + 50);
+    win->draw(text);
+    for(int i=scores.size()-1;i>=0;i--)
+    {
+        std::string s="x.Player y won.";
+        s[0]=(char)(i+49);
+        s[9]=scores[5-i]+49;
+        text.setString(s);
+        text.setPosition(win->getSize().x / 2 - text.getGlobalBounds().width / 2,
+                         win->getSize().y / 2 - text.getGlobalBounds().height / 4 + 20 +i*50);
+        win->draw(text);
+    }
+}
 
-
-
+void PlayerView::loadScores()
+{
+    std::ifstream file("Scores.txt");
+    std::string winner;
+    while(std::getline(file,winner))
+    {
+        scores.push_back( (winner=="0")? 0:1);
+        if(scores.size()>5) scores.erase(scores.begin());
+    }
+    file.close();
+}
