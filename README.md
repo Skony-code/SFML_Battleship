@@ -1,6 +1,6 @@
 # SFML_Battleship
 Popular Battleship game with simple AI.
-##Requierments
+## Requierments
 SFML-2.5.1 version for GCC 7.3.0 MinGW (32-bit) compiler
 ## Controls
 
