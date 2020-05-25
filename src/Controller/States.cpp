@@ -155,10 +155,13 @@ void P2TurnState::render(GameEngine &GM) {
     getPlayerView(GM)->drawBoard();
 }
 void P2TurnState::update(GameEngine &GM) {
-    fireAtRandom(GM);
-    if(getPlayer1(GM)->didLost())setState(GM,new GameEndState);
+    setSuspectedXY(GM);
+    getPlayer2(GM)->fire(*getPlayer1(GM),fire_x,fire_y);
+    if(!getPlayer2(GM)->get_player_hits()[fire_x][fire_y])setState(GM,new P1TurnState);
+    else if(getPlayer1(GM)->didLost())setState(GM,new GameEndState);
 }
-void P2TurnState::fireAtRandom(GameEngine& GM) {
+void P2TurnState::setRandomXY(GameEngine &GM)
+{
     int empty_tiles=0;
     for(int i=0;i<10;i++)
     {
@@ -179,17 +182,9 @@ void P2TurnState::fireAtRandom(GameEngine& GM) {
             {
                 if (rand_shot == 0)
                 {
-                    getPlayer2(GM)->fire(*getPlayer1(GM), i, j);
-                    if (getPlayer2(GM)->get_player_hits()[i][j])
-                    {
-                        setState(GM, new P2TurnState);
-                        return;
-                    }
-                    else
-                    {
-                        setState(GM, new P1TurnState);
-                        return;
-                    }
+                    fire_x=i;
+                    fire_y=j;
+                    return;
                 }
                 else
                 {
@@ -198,6 +193,113 @@ void P2TurnState::fireAtRandom(GameEngine& GM) {
             }
         }
     }
+}
+
+void P2TurnState::setSuspectedXY(GameEngine &GM)
+{
+    for(int i=0;i<10;i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            if(getPlayer2(GM)->get_player_hits()[i][j] && !getPlayer1(GM)->didSink(i,j))
+            {
+                //checking aligment
+                bool aligment;
+                if(i<9 && getPlayer2(GM)->get_player_hits()[i+1][j]) aligment=0;
+                else if(i>0 && getPlayer2(GM)->get_player_hits()[i-1][j]) aligment=0;
+                else if(j<9 && getPlayer2(GM)->get_player_hits()[i][j+1]) aligment=1;
+                else if(j>0 && getPlayer2(GM)->get_player_hits()[i][j-1]) aligment=1;
+                else
+                {
+                    bool end_flag=0;
+                    while(!end_flag)
+                    {
+                        int dir=rand()%4;
+                        switch(dir)
+                        {
+                            case 0:
+                                fire_x=i+1;
+                                fire_y=j;
+                                break;
+                            case 1:
+                                fire_x=i-1;
+                                fire_y=j;
+                                break;
+                            case 2:
+                                fire_x=i;
+                                fire_y=j+1;
+                                break;
+                            case 3:
+                                fire_x=i;
+                                fire_y=j-1;
+                                break;
+                        }
+                        if(fire_x>=0 && fire_x<10 && fire_y>=0 && fire_y<10 && !getPlayer2(GM)->get_player_shots()[fire_x][fire_y])
+                            end_flag=1;
+                    }
+                    return;
+                }
+                //std::cout<<j<<std::endl;
+                //predicting ship position acording to aligment
+                if(aligment)
+                {
+                    int z=1;
+                    while(j+z<10 && getPlayer2(GM)->get_player_hits()[i][j+z] || !getPlayer2(GM)->get_player_shots()[i][j+z])
+                    {
+                        if(!getPlayer2(GM)->get_player_shots()[i][j+z])
+                        {
+                            std::cout<<"1"<<std::endl;
+                            fire_x=i;
+                            fire_y=j+z;
+                            return;
+                        }
+                        else z++;
+                    }
+                    z=1;
+                    while(j-z>=0 && getPlayer2(GM)->get_player_hits()[i][j-z] || !getPlayer2(GM)->get_player_shots()[i][j-z])
+                    {
+                        if(!getPlayer2(GM)->get_player_shots()[i][j-z])
+                        {
+                            std::cout<<"2"<<std::endl;
+                            fire_x=i;
+                            fire_y=j-z;
+                            return;
+                        }
+                        else z++;
+                    }
+                }
+                else
+                {
+                    int z=1;
+                    while(i+z<10 && getPlayer2(GM)->get_player_hits()[i+z][j] || !getPlayer2(GM)->get_player_shots()[i+z][j])
+                    {
+                        if(!getPlayer2(GM)->get_player_shots()[i+z][j])
+                        {
+                            std::cout<<"3"<<std::endl;
+                            fire_x=i+z;
+                            fire_y=j;
+                            return;
+                        }
+                        else z++;
+                    }
+                    z=1;
+                    while(i-z>=0 && getPlayer2(GM)->get_player_hits()[i-z][j] || !getPlayer2(GM)->get_player_shots()[i-z][j])
+                    {
+                        if(!getPlayer2(GM)->get_player_shots()[i-z][j])
+                        {
+                            std::cout<<"4"<<std::endl;
+                            fire_x=i-z;
+                            fire_y=j;
+                            return;
+                        }
+                        else z++;
+                    }
+                }
+                return;
+            }
+        }
+    }
+    setRandomXY(GM);
 }
 
 //GameEndState

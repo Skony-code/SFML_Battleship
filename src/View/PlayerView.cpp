@@ -74,6 +74,8 @@ void PlayerView::drawCross(int x,int y,int w,sf::Color c) {
 void PlayerView::drawShipTile(int x, int y,sf::Color c) {
     sf::RectangleShape ship(sf::Vector2f(t_side-1,t_side-1));
     ship.setPosition(x,y);
+    ship.setOutlineThickness(1);
+    ship.setOutlineColor(sf::Color(0,0,0));
     ship.setFillColor(c);
     win->draw(ship);
 }
@@ -122,7 +124,7 @@ void PlayerView::drawStart() {
     text.setString("Battleships");
     text.setCharacterSize(48); // in pixels, not points!
     text.setPosition(win->getSize().x/2-text.getGlobalBounds().width/2,win->getSize().y/2-text.getGlobalBounds().height/2);
-    text.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color(40,185,0));
     win->draw(text);
 }
 

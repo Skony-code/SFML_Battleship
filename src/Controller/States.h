@@ -73,7 +73,10 @@ public:
 class P2TurnState : public State
 {
 private:
-    void fireAtRandom(GameEngine& GM);
+    int fire_x;
+    int fire_y;
+    void setSuspectedXY(GameEngine& GM);
+    void setRandomXY(GameEngine& GM);
 public:
     virtual void handleEvent(GameEngine& GM,sf::Event e);
     virtual void render(GameEngine& GM);
