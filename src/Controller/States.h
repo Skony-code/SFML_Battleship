@@ -35,6 +35,7 @@ protected:
     void randomPositioning(GameEngine &GM,Player* p);
 public:
     PositioningState();
+    ~PositioningState();
     virtual void handleEvent(GameEngine& GM,sf::Event e)=0;
     virtual void render(GameEngine& GM)=0;
     virtual void update(GameEngine& GM)=0;

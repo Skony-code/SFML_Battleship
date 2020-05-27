@@ -27,7 +27,6 @@ private:
 public:
     PlayerView(Player &p, sf::RenderWindow* win);
     void drawBoard();
-    void clear();
     void drawWin();
     void drawLose();
     void drawStart();
