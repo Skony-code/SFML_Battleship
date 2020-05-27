@@ -167,7 +167,6 @@ void P2TurnState::render(GameEngine &GM) {
 void P2TurnState::update(GameEngine &GM) {
     setSuspectedXY(GM);
     getPlayer2(GM)->fire(*getPlayer1(GM),fire_x,fire_y);
-    std::cout<<fire_x<<" "<<fire_y<<std::endl;
     if(!getPlayer2(GM)->get_player_hits()[fire_x][fire_y])setState(GM,new P1TurnState);
     else if(getPlayer1(GM)->didLost())
     {

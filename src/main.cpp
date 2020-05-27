@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
-#include "src/Model/Player.h"
-#include "src/View/PlayerView.h"
-#include "src/Controller/GameEngine.h"
+#include "Model/Player.h"
+#include "View/PlayerView.h"
+#include "Controller/GameEngine.h"
 
 using namespace std;
 int main()
