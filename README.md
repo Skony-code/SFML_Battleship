@@ -1,7 +1,7 @@
 # SFML_Battleship
 Popular Battleship game with simple AI.
 ## Requierments
-SFML-2.5.1 version for GCC 7.3.0 MinGW (32-bit) compiler,all files in Resources need to be in copied to the current working directory.
+SFML-2.5.1 version for GCC 7.3.0 MinGW (32-bit) compiler,all files in Resources need to be copied to the current working directory.
 ## Controls
 
 LMB - fire/place ship
